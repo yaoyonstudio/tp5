@@ -140,20 +140,18 @@ class User extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data = $request->param();
+        $data = $request->only('user_sex,user_email,user_birthday,user_qq,user_headpic,user_address_id,user_nickname');
 
-        $validate = Loader::validate('NewsValid');
-        
-        if(!$validate->check($data)){
-            $result["errorMsg"] = $validate->getError();
+        if(!$data){
+            $result["errorMsg"] = "修改信息为空";
             $result["status"] = false;
         }else{
-            $updateRst = NewsModel::update($data, ['news_id' => $id]);
+            $updateRst = UserModel::update($data, ['user_id' => $id]);
             if($updateRst){
                 $result["data"] = $updateRst;
                 $result["status"] = true;
             }else{
-                $result["errorMsg"] = "新闻修改错误";
+                $result["errorMsg"] = "用户信息修改错误";
                 $result["status"] = false;
             }
         }
@@ -168,13 +166,16 @@ class User extends Controller
      */
     public function delete($id)
     {
-        $deleteRst = NewsModel::destroy($id);
-        if($deleteRst){
-            $result["status"] = true;
-        }else{
-            $result["errorMsg"] = "删除不成功";
-            $result["status"] = false;
-        }
+        // $deleteRst = UserModel::destroy($id);
+        // if($deleteRst){
+        //     $result["status"] = true;
+        // }else{
+        //     $result["errorMsg"] = "删除不成功";
+        //     $result["status"] = false;
+        // }
+
+        $result["errorMsg"] = "用户数据不能删除";
+        $result["status"] = false;
         return json($result);
     }
 
@@ -186,14 +187,11 @@ class User extends Controller
      * @return \think\Response
      */
     public function login(Request $request){
-
         $userinfo = $request->param();
         if(isset($userinfo['user_name']) && isset($userinfo['user_password'])){
-
             $user = UserModel::get(function($query) use ( & $userinfo){
                 $query->where(['user_name' => $userinfo['user_name'], 'user_password' => md5($userinfo['user_password'])])->field('user_id,user_name,user_sex,user_email,user_birthday,user_mobile,user_qq,user_headpic,user_nickname,user_level,user_discount,user_token,create_time,user_last_login,user_islock,user_email_validated,user_address_id');
             });
-
             if($user){
                 //用户登录成功，更新用户部分信息
                 $user_token = $this->generate_token();
@@ -210,15 +208,86 @@ class User extends Controller
                 $result["errorMsg"] = "用户名或密码不正确";
                 $result["status"] = false;
             }
-
-
         }else{
             $result["errorMsg"] = "用户名或密码为空";
             $result["status"] = false;
         }
+        return json($result);
+    }
+
+    /**
+     * 修改密码
+     *
+     * @param  string  $user_id
+     * @param  string  $origin_password
+     * @param  string  $user_password
+     * @return \think\Response
+     */
+    public function changePassword(Request $request){
+        $user_id = $request->param('user_id');
+        $origin_password = $request->param('origin_password');
+        $user_password = $request->param('user_password');
+
+        if(!$user_id || !$origin_password || !$user_password){
+            $result["errorMsg"] = "请求参数不完整";
+            $result["status"] = true;
+            return json($result);
+        }
+
+        $user = UserModel::find($user_id);
+        if(md5($origin_password) == $user['user_password']){
+            $data['user_password'] = md5($user_password);
+            $updatePwdRst = UserModel::update($data, ['user_id' => $user_id]);
+            if($updatePwdRst){
+                $result["errorMsg"] = "密码修改成功";
+                $result["status"] = true;
+            }else{
+                $result["errorMsg"] = "密码修改失败";
+                $result["status"] = false;
+            }
+        }else{
+            $result["errorMsg"] = "原密码错误";
+            $result["status"] = false;
+        }
 
         return json($result);
+    }
 
-        
+    /**
+     * 修改手机
+     *
+     * @param  string  $origin_mobile
+     * @param  string  $user_mobile
+     * @param  string  $user_validcode
+     * @return \think\Response
+     */
+    public function changeMobile(Request $request){
+        $user_id = $request->param('user_id');
+        $origin_mobile = $request->param('origin_mobile');
+        $user_mobile = $request->param('user_mobile');
+
+        if(!$user_id || !$origin_mobile || !$user_mobile){
+            $result["errorMsg"] = "请求参数不完整";
+            $result["status"] = true;
+            return json($result);
+        }
+
+        $user = UserModel::find($user_id);
+        if($origin_mobile == $user['user_mobile']){
+            $data['user_mobile'] = $user_mobile;
+            $updateMobileRst = UserModel::update($data, ['user_id' => $user_id]);
+            if($updateMobileRst){
+                $result["errorMsg"] = "手机修改成功";
+                $result["status"] = true;
+            }else{
+                $result["errorMsg"] = "手机修改失败";
+                $result["status"] = false;
+            }
+        }else{
+            $result["errorMsg"] = "原手机错误";
+            $result["status"] = false;
+        }
+
+        return json($result);
     }
 }

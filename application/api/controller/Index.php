@@ -12,19 +12,5 @@ class Index extends Controller
         return 'api Index';
     }
 
-    public function hello($name='ken'){
-    	return 'hello ' . $name;
-    }
-
-    public function test($name='ken'){
-    	return 'hello, ' . $name . ' , This is a test.';
-    }
-
-    public function today($year, $month){
-        return '现在是' . $year . '年' . $month . '月'; 
-    }
-
-    public function funny(){
-        return 'funny';
-    }
+    
 }

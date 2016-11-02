@@ -11,14 +11,21 @@
 
 use think\Route;
 
-Route::rule('funny','api/Index/funny');
-
+//新闻、分类/标签、新闻评论
 Route::resource('api/news','api/news');
+Route::resource('api/categories','api/categories');
 Route::resource('api/comment','api/comment');
-Route::resource('api/user','api/user');
 
+//用户、登录、注册、改变密码、改变手机
+Route::resource('api/user','api/user');
 Route::rule('api/users/login','api/user/login');
 Route::rule('api/users/register','api/user/save', 'POST');
+Route::rule('api/users/changepassword','api/user/changePassword', 'POST');
+Route::rule('api/users/changemobile','api/user/changeMobile', 'POST');
+
+//获取配置信息
+Route::resource('api/config','api/config');
+
 
 
 
