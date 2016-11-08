@@ -42,4 +42,9 @@ class Index extends Controller
             echo '请求有误';
         }
     }
+
+    public function addnews(){
+
+        return $this->fetch();
+    }
 }
