@@ -1,29 +1,29 @@
 {include file="../application/index/view/public/addnewsheader.html" /}
 <div class="main">
 	<div style="padding:20px; box-sizing: border-box; width:100%; max-width:1000px; background-color: #fff; margin:20px auto;">
-		<form id="addnewsform">
+		<form id="addnewsform" method="post" action="/index/index/createnews" enctype="multipart/form-data" onsubmit="return checkForm()">
 			<table class="table table-hover mytable">
 				<tr>
 					<td width="20%">新闻标题</td>
-					<td><input type="text" placeholder="新闻标题" /></td>
+					<td><input type="text" id="news_title" name="news_title" placeholder="新闻标题" /></td>
 				</tr>
 				<tr>
 					<td width="20%">新闻关键词</td>
-					<td><input type="text" placeholder="新闻关键词" /></td>
+					<td><input type="text" name="news_keywords" placeholder="新闻关键词" /></td>
 				</tr>
 				<tr>
 					<td width="20%">新闻来源</td>
-					<td><input type="text" placeholder="新闻来源" /></td>
+					<td><input type="text" name="news_souce" placeholder="新闻来源" /></td>
 				</tr>
 				<tr>
 					<td width="20%">新闻来源链接</td>
-					<td><input type="text" placeholder="新闻来源链接" /></td>
+					<td><input type="text" name="news_soucelink" placeholder="新闻来源链接" /></td>
 				</tr>
 				<tr>
 					<td width="20%">新闻发布时间</td>
 					<td>
 						<div class="input-group date">
-							<input type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+							<input type="text" class="form-control" name="news_publish_time"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
 						</div>
 					</td>
 				</tr>
@@ -31,47 +31,56 @@
 					<td width="20%">新闻是否发布</td>
 					<td>
 						<label class="radio-inline">
-							<input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="1" checked> 是
+							<input type="radio" name="news_isopen" id="inlineRadio1" value="1" checked> 是
 						</label>
 						<label class="radio-inline">
-							<input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="0"> 否
+							<input type="radio" name="news_isopen" id="inlineRadio2" value="0"> 否
 						</label>
 					</td>
 				</tr>
+                <tr>
+                    <td width="20%">新闻是否推荐</td>
+                    <td>
+                        <label class="radio-inline">
+                            <input type="radio" name="news_isrecommend" id="inlineRadio1" value="1"> 是
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="news_isrecommend" id="inlineRadio2" value="0" checked> 否
+                        </label>
+                    </td>
+                </tr>
 				<tr>
 					<td width="20%">新闻分类</td>
 					<td>
-						<select class="form-control">
-							<option>1</option>
-							<option>2</option>
-							<option>3</option>
-							<option>4</option>
-							<option>5</option>
-						</select>
+                        <select class="form-control" name="cat_id">
+                            {volist name="news_categories" id="cate"}
+                            <option value="{$cate.cat_id}">{$cate.cat_name}</option>
+                            {/volist}
+                        </select>
 					</td>
 				</tr>
 				<tr>
 					<td width="20%">新闻类型</td>
 					<td>
-						<select class="form-control">
-							<option>1</option>
-							<option>2</option>
-							<option>3</option>
-							<option>4</option>
-							<option>5</option>
-						</select>
+                        <select class="form-control" name="news_type" id="news_type">
+                            <option value="0">自动</option>
+                            <option value="1">无图</option>
+                            <option value="2">单图</option>
+                            <option value="3">多图</option>
+                        </select>
 					</td>
 				</tr>
 				<tr>
 					<td width="20%">新闻描述</td>
 					<td>
-						<textarea class="form-control" rows="3"></textarea>
+						<textarea class="form-control" rows="3" name="news_description"></textarea>
 					</td>
 				</tr>
-				<tr>
-					<td width="20%">新闻特色图片</td>
+				<tr id="featuredImg" class="featuredImg">
+					<td width="20%">新闻特色图片<span id="required" class="required">*</span></td>
 					<td>
-						<input type="file" id="exampleInputFile">
+						<input type="file" multiple name="img" id="img" ><br />
+                        <div id="imgPreviewBox" class="imgPreviewBox"></div>
 					</td>
 				</tr>
 				<tr>
@@ -81,16 +90,127 @@
 					</td>
 				</tr>
 			</table>
-			<button onclick="getContent()">获得内容</button>
-			<button onclick="getContentTxt()">获得纯文本</button>
-			<button onclick="getPlainTxt()">获得带格式的纯文本</button>
-			<button onclick="hasContent()">判断是否有内容</button>
+			<!--<button onclick="getContent()">获得内容</button>-->
+			<!--<button onclick="getContentTxt()">获得纯文本</button>-->
+			<!--<button onclick="getPlainTxt()">获得带格式的纯文本</button>-->
+			<!--<button onclick="hasContent()">判断是否有内容</button>-->
+			<div style="text-align: center;margin-top: 20px;">
+                <input type="submit" value="发布" />
+                <p id="errorMsg" class="errorMsg"></p>
+            </div>
 		</form>
 	</div>
 </div>
 <script>
 	$('#addnewsform .input-group.date').datepicker({
 	});
+
+    //清空元素值
+    function clearElement(id){
+        var up = (typeof id=="string")?document.getElementById(id):id;
+        if (typeof up != "object") return null;
+        var tt = document.createElement("span");
+        tt.id = "__tt__";
+        up.parentNode.insertBefore(tt,up);
+        var tf = document.createElement("form");
+        tf.appendChild(up);
+        document.getElementsByTagName("body")[0].appendChild(tf);
+        tf.reset();
+        tt.parentNode.insertBefore(up,tt);
+        tt.parentNode.removeChild(tt);
+        tt = null;
+        tf.parentNode.removeChild(tf);
+    }
+
+    //上传图片预览
+    $("#img").change(function () {
+        var imgs = [];
+        for(var i=0; i<this.files.length; i++){
+            imgs.push(this.files[i]);
+        }
+        if(imgs.length > 3){
+            $("#imgPreviewBox").html("<p class='error'>上传特色图片不能超过3张!</p>");
+            clearElement('img');
+            imgs.length = 0;
+        }else{
+            $("#imgPreviewBox").html("");
+            function readAndPreview(file) {
+                // Make sure `file.name` matches our extensions criteria
+                if ( /\.(jpe?g|png|gif)$/i.test(file.name) ) {
+                    var reader = new FileReader();
+                    reader.addEventListener("load", function () {
+                        var image = new Image();
+                        image.height = 100;
+                        image.title = file.name;
+                        image.src = this.result;
+                        $("#imgPreviewBox").append( image );
+                    }, false);
+
+                    reader.readAsDataURL(file);
+                }
+            }
+            if(this.files){
+                [].forEach.call(this.files, readAndPreview);
+            }
+        }
+    });
+
+    //根据文章(显示)类型来确定图片上传是否为必选项
+    $('#news_type').change(function () {
+        console.log(this.value);
+        switch (this.value){
+            case "0":
+                $("#featuredImg").css('display', 'none');
+                break;
+            case "1":
+                $("#featuredImg").css('display', 'none');
+                break;
+            case "2":
+                $("#featuredImg").css('display', 'table-row');
+                break;
+            case "3":
+                $("#featuredImg").css('display', 'table-row');
+				$("#img").attr("name", "img[]");
+                break;
+            default:
+                break;
+        }
+    });
+
+    function checkForm(){
+        var errorMsg = '';
+        if(!$("#news_title").val()){
+            errorMsg += "新闻标题不能为空\n";
+        }
+
+        switch ($('#news_type').val()){
+            case "2":
+                if($("#img").get(0).files.length != 1){
+                    errorMsg += "图片必须为1张\n";
+                }
+                break;
+            case "3":
+                if($("#img").get(0).files.length != 3) {
+                    errorMsg += "图片必须为3张\n";
+                }
+                break;
+            default:
+                break;
+        }
+        if(!UE.getEditor('editor').hasContents()){
+            errorMsg += "内容不能为空\n";
+        }
+
+        if(errorMsg){
+            $("#errorMsg").text(errorMsg);
+            $("#errorMsg").css('display', 'block');
+            return false;
+        }
+    }
+
+
+
+
 </script>
 
 <script type="text/javascript">

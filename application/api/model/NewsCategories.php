@@ -5,11 +5,6 @@ use think\Model;
 
 class NewsCategories extends Model{
     protected $autoWriteTimestamp = true;
-    protected $insert             = [
-        'cat_group' => 0,
-        'parent_id' => 0,
-        'type' => 1,    //1为分类，2为标签
-    ];
 
     protected $field = [
         'cat_id'          => 'int',

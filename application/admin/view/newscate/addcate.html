@@ -1,0 +1,95 @@
+{include file="../application/admin/view/public/adminHeader.html" /}
+
+<!-- page content -->
+<div class="right_col" role="main">
+  <div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+      <div class="x_title">
+        <h4>添加分类标签</h4>
+        <div class="clearfix"></div>
+      </div>
+      <div class="x_content">
+        <form id="addCatForm" name="addCatForm" method="post" action="/admin/newscate/createcate" enctype="application/x-www-form-urlencoded" onsubmit="return checkForm()">
+          <table id="newslist-table" class="table table-hover mytable" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <tr>
+                <td width="20%">分类标签标题</td>
+                <td><input class="form-control" type="text" name="cat_name" id="cat_name" placeholder="请输入分类标签标题" /></td>
+              </tr>
+              <tr>
+                <td>分类标签分组</td>
+                <td><input class="form-control" type="number" name="cat_group" id="cat_group" placeholder="请输入分类标签分组" /></td>
+              </tr>
+              <tr>
+                <td>父级类别</td>
+                <td>
+                  <select class="form-control" id="parent_id" name="parent_id">
+                    <option value="0">无</option>
+                    {volist name="newsCategories" id="cate"}
+                    <option value="{$cate.cat_id}">{$cate.cat_name}</option>
+                    {/volist}
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td>分类标签</td>
+                <td>
+                  <select class="form-control" name="type" id="type">
+                    <option value="1">类别</option>
+                    <option value="2">标签</option>
+                  </select>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        <div class="form-group" style="text-align: center;">
+          <input type="submit" value="发布" id="submit" class="btn btn-default" />
+          <p id="errorMsg" class="errorMsg"></p>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /page content -->
+
+<script>
+//  $("#submit").click(function(){
+//    console.log($("#cat_name").val())
+//  })
+  function checkForm(){
+    console.log('dd')
+    var errorMsg = '';
+    if(!$("#cat_name").val()){
+      errorMsg += "新闻类别标题不能为空\n";
+    }
+
+    if(errorMsg){
+      $("#errorMsg").text(errorMsg);
+      $("#errorMsg").css('display', 'block');
+      return false;
+    }
+  }
+
+  $("#parent_id").change(function () {
+    if ($(this).val() != 0) {
+      $("#cat_group").attr("readonly", true)
+      $("#cat_group").val(0)
+    }
+  })
+
+  $("#type").change(function () {
+    if ($(this).val() == 2) {
+      $("#cat_group").attr("readonly", true)
+      $("#cat_group").val(0)
+      $("#parent_id").attr("disabled", true)
+      $("#parent_id").val(0)
+    } else {
+      $("#cat_group").removeAttr("readonly")
+      $("#parent_id").removeAttr("disabled")
+    }
+  })
+
+</script>
+
+{include file="../application/admin/view/public/adminFooter.html" /}

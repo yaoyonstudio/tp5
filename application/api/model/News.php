@@ -7,7 +7,7 @@ class News extends Model{
     protected $autoWriteTimestamp = true;
     protected $insert             = [
         'news_type' => 1,
-        'news_isopen' => 1,
+        'news_isopen' => 1
     ];
 
     protected $field = [

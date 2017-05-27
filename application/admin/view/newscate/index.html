@@ -1,0 +1,65 @@
+{include file="../application/admin/view/public/adminHeader.html" /}
+
+<!-- page content -->
+<div class="right_col" role="main">
+  <div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+      <div class="x_title">
+        <a class="{$type == '1' ? 'active' : ''}" href="/admin/NewsCate/index?type=1">分类</a>
+        <a class="{$type == '2' ? 'active' : ''}" href="/admin/NewsCate/index?type=2">标签</a>
+        <div class="clearfix"></div>
+      </div>
+      <div class="x_content">
+        <table id="newslist-table" class="cateTable" cellspacing="0" cellpadding="0" width="100%">
+          <thead>
+            <tr>
+              <th>类别ID</th>
+              <th>类别名</th>
+              <th>所在组</th>
+              <th>类型</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            {volist name="newsCategories" id="cate"}
+              <tr>
+                <td class="subContainer" colspan="5">
+                  <table cellspacing="0" cellpadding="0" width="100%">
+                    <thead>
+                      <tr>
+                        <th><span>{$cate.cat_id}</span></th>
+                        <th>{$cate.cat_name}</th>
+                        <th>{$cate.parent_id}</th>
+                        <th>
+                          {switch name="$cate.type"}
+                          {case value="1"}分类{/case}
+                          {case value="2"}标签{/case}
+                          {/switch}
+                        </th>
+                        <th><button>编辑</button>  <button>删除</button></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {volist name="$cate.sub" id="sub"}
+                      <tr class="sub">
+                        <td><span>|— {$sub.cat_id}</span></td>
+                        <td><span>|— </span> {$sub.cat_name}</td>
+                        <td></td>
+                        <td></td>
+                        <td><button>编辑</button>  <button>删除</button></td>
+                      </tr>
+                      {/volist}
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            {/volist}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /page content -->
+
+{include file="../application/admin/view/public/adminFooter.html" /}

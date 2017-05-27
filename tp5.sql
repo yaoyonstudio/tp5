@@ -3,20 +3,20 @@ Navicat MySQL Data Transfer
 
 Source Server         : localhost
 Source Server Version : 50505
-Source Host           : localhost:3306
+Source Host           : 127.0.0.1:3306
 Source Database       : tp5
 
 Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2016-10-30 14:44:30
+Date: 2016-11-22 15:47:11
 */
 
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for admin
+-- Table structure for `admin`
 -- ----------------------------
 DROP TABLE IF EXISTS `admin`;
 CREATE TABLE `admin` (
@@ -47,7 +47,7 @@ INSERT INTO `admin` VALUES ('4', 'yaoyonstudio', 'yaoyonstudio@admin.com', 'yaoy
 INSERT INTO `admin` VALUES ('5', '', '', '', null, '0', null, null, null, null, null, null, null, null);
 
 -- ----------------------------
--- Table structure for admin_role
+-- Table structure for `admin_role`
 -- ----------------------------
 DROP TABLE IF EXISTS `admin_role`;
 CREATE TABLE `admin_role` (
@@ -70,24 +70,35 @@ INSERT INTO `admin_role` VALUES ('4', '新闻管理员', '所有关于新闻的�
 INSERT INTO `admin_role` VALUES ('5', '商品管理员', '所有关于商品的权限（不含删除）', null, null, null);
 
 -- ----------------------------
--- Table structure for config
+-- Table structure for `config`
 -- ----------------------------
 DROP TABLE IF EXISTS `config`;
 CREATE TABLE `config` (
   `config_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `config_key` varchar(64) NOT NULL COMMENT '配置项',
   `config_value` varchar(512) NOT NULL COMMENT '配置值',
-  `config_group` varchar(64) NOT NULL COMMENT '配置分组',
+  `config_group` varchar(64) DEFAULT NULL COMMENT '配置分组',
   `config_desc` varchar(100) DEFAULT NULL COMMENT '配置描述',
   PRIMARY KEY (`config_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of config
 -- ----------------------------
+INSERT INTO `config` VALUES ('1', 'site_name', '测试网站', '1', '网站标题');
+INSERT INTO `config` VALUES ('2', 'site_subname', '这是一个测试网站', '2', '网站副标题');
+INSERT INTO `config` VALUES ('3', 'site_url', 'http://www.thatyou.cn', '3', '站点地址');
+INSERT INTO `config` VALUES ('4', 'site_email', 'test@qq.com', '1', '站点联系邮箱');
+INSERT INTO `config` VALUES ('5', 'site_icp', '粤ICP备15027008-2号', '2', '备案号');
+INSERT INTO `config` VALUES ('6', 'administrator', 'ken', null, null);
+INSERT INTO `config` VALUES ('9', 'site_langs', 'abavdfsfs', '1', '这是描述信息啊');
+INSERT INTO `config` VALUES ('10', 'site_langs', 'abavdfsfs', '1', '这是描述信息啊');
+INSERT INTO `config` VALUES ('11', 'site_langs', 'abavdfsfs', '1', '这是描述信息啊');
+INSERT INTO `config` VALUES ('12', 'site_langs', 'abavdfsfs', '1', '这是描述信息啊');
+INSERT INTO `config` VALUES ('13', 'site_langs', 'abavdfsfs', '1', '这是描述信息啊');
 
 -- ----------------------------
--- Table structure for news
+-- Table structure for `news`
 -- ----------------------------
 DROP TABLE IF EXISTS `news`;
 CREATE TABLE `news` (
@@ -99,7 +110,7 @@ CREATE TABLE `news` (
   `news_content` longtext NOT NULL COMMENT '新闻资讯内容',
   `news_type` tinyint(1) unsigned NOT NULL,
   `news_isopen` tinyint(1) unsigned NOT NULL COMMENT '是否开启',
-  `img_id` bigint(20) unsigned DEFAULT NULL COMMENT '缩略图',
+  `img_id` varchar(10) DEFAULT NULL COMMENT '缩略图',
   `news_souce` varchar(50) DEFAULT NULL COMMENT '来源',
   `news_soucelink` varchar(255) DEFAULT NULL COMMENT '来源网址',
   `news_file_url` varchar(255) DEFAULT NULL COMMENT '附件地址',
@@ -116,7 +127,7 @@ CREATE TABLE `news` (
   KEY `cat_id` (`cat_id`),
   CONSTRAINT `cat_id` FOREIGN KEY (`cat_id`) REFERENCES `news_categories` (`cat_id`),
   CONSTRAINT `editor_id` FOREIGN KEY (`editor_id`) REFERENCES `admin` (`admin_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of news
@@ -137,12 +148,21 @@ INSERT INTO `news` VALUES ('13', '1', '成功人士的乐观6式', '每分每秒
 INSERT INTO `news` VALUES ('14', '3', '所有的成长，都因站对了地方', '不要犹豫，尽早认准大方向。消灭选择，义无反顾，认准长远，认定自己，然后想方设法找到你要奋斗的那个圈子，你会跟着这个圈子不断地往上走。', null, '<p>今天我想通过三个故事，来讲三个经济学基本道理。</p><p><span style=\\\"font-family: 微软雅黑; font-size: 14pt;\\\"><strong>第一个故事，它的主题词叫“消灭选择”。</strong></span></p><p>我出生在北京，幼儿园还没有毕业，就被送到了农村。上小学的第一天，同学们课间把我叫到了操场，我傻呵呵的刚过去，还没站稳呢，有一个同学悄悄地跑到我的身后，把我的裤子一拉，扒下来了。奇耻大辱！怎么办？找班主任。</p><p>我跟班主任告状，班主任讲的是方言我没听太懂，大概的意思是说——你小子真笨，连自个的裤子都保不住。</p><p>然后我就回家了，我心里非常明白，假如我告诉父母的话，我父母一点儿不同情我，一定会教育我说一定是你犯错误了，农民的孩子都很纯朴的，怎么会打你呢？</p><p><strong>所以我想我是没有选择，必须靠自己。怎么靠自己？三件事。</strong></p><p>第一件事，我找到我妈妈，你必须给我一个绳子，把我的裤子扎起来。</p><p>第二件事，我要跑，我打不赢，我要先能学会跑。</p><p>第三件事，我得观察孩子们怎么打架的。</p><p>最后，机会来了，一个月以后，我的班主任要我做值日。这时候这四五个人要打我，我先跟他们转悠，逮着一个机会，朝一个同学撞过去了。他没防备，头撞到了课桌上。</p><p>第二天，我的妈妈买了饼干，带着我到这位同学家去赔礼道歉。那是在一头牛的边上，那个味道一辈子我都没忘记！那是香味，我第一次尝到了胜利的甜头，从此以后，没有人敢随便欺负我了。</p><p>这件事情告诉我什么呢？在没有选择的情况下，人才能够被激发出来。</p><p>看我们年轻人，今天你们的问题，不是没有选择，而是选择太多了。我的很多学生，经常来问我，以后做什么，尤其是博士生。我说你读了博士都还没想清楚未来干什么这个有问题。</p><p>假如马云，考试成绩好一点，能考上一个很好的学校，读了金融，恐怕今天不见得要创业了吧？假如马云长得，像撒贝宁一半那么帅，有可能到个电视台当个主持了，就不创业了？所以我们的马云也好，刘强东也好，他们往往是被动地，消灭很多选择，背水一战。</p><p><span style=\\\"font-family: 微软雅黑; font-size: 14pt;\\\"><strong>第二个故事，它的主题词叫“人力资本”。</strong></span></p><p>1992年，我博士毕业了，在找工作。第一个去面试纽约大学，系主任当时决定要给我工作。一星期以后，密歇根大学经济系也给我打电话，说要请我去经济系工作。</p><p>于是我就碰到了一个选择的问题，纽约大学金融系，金融研究水平非常高，工资整整是密歇根大学的两倍，怎么办？其中纽约大学的系主任，碰巧是我一个同学的父亲，所以跟我讲话很直。“我给你付的工资是别人经济系的两倍，你来我这，你专门给我研究金融问题。甭搞你的中国经济研究！”</p><p>这句话在我脑子里反复回响，我当年选了经济学，想的是中国的事情。如果我去了纽约大学，只让我研究金融的问题，跟中国不直接搭界，我的未来会是怎么样呢？我会高兴吗？想到这儿，义无反顾去经济系。</p><p>为什么？用经济学的道理来讲，我想的是未来，是人力资本。什么叫人力资本？就是你未来的，获得幸福的能力。</p><p>从某种意义上讲我们每一位同学，你们不用买股票，你们已经有了一个大股票，就是你自己呀！你是你这只股票的CEO、董事长，你的导师、你的老师、你的父母、你的同学、都是你的持股者。所以你的主要的任务，今天应该是如何做好你的主营业务，如何让你未来更加快乐。</p><p>关于是否要逃离北京，今天我可能忍受，大城市的痛苦，但是未来我会更幸福。因为我在大城市，我获得了工作的机会、锻炼的机会。我认识了很多，跟我想法相像的年轻人，有很多导师来指导我。</p><p><span style=\\\"font-family: 微软雅黑; font-size: 14pt;\\\"><strong>第三个故事，它的主题词叫“圈子”。</strong></span></p><p>这是我一个非常好的朋友的故事。这位同学上个世纪八十年代中，在波士顿上大学。他一早就想清楚了要搞金融，怎么能够进入金融这个圈子呢？每一个周末，他坐着公共汽车去波士顿。</p><p>美国的公共汽车，可不是北京上海的五分钟一班呐，一小时一班呐！他需要背着干粮，带着牛奶，一走走一天。去波士顿的金融街，看大厅里看着那个门板，记下来这些公司的负责人，名字、部门是什么。之后找到公司的总部的这些总机，打电话过去，我要跟史密斯先生谈一谈，他是哪个部门的。总机的接线员一听，这小伙子还挺靠谱，放进去吧。于是他通过这种方式，跟华尔街在波士顿的分公司就接上头了。</p><p>很快就去这家公司做实习生了，再过五六年，他成了一个全球三大之一的投资银行的亚太部的总管，现在已经下海自己创业了。<br />那么这个故事在经济学是什么道理呢？经济学我们就叫它外部性、外溢性。</p><p>往往我们年轻人会有一种情结，经过我的奋斗，成功了，为什么这个圈子还有其他的人，这样跟我竞争啊？“瑜亮情结”，既生瑜何生亮。</p><p>这个道理经济学也告诉我们，不应该这么想，因为人才的成长都是集团性的。</p><p>所以最后我想总结告诉大家，不要犹豫，尽早认准大方向。消灭选择，义无反顾，认准长远，认定自己，然后想方设法找到你要奋斗的那个圈子，你会跟着这个圈子不断地往上走。</p><p>所有的成长，都是因为站对了地方。</p><p>2016，各位，成长愉快。</p><p>&nbsp;</p><p>本文作者李稻葵，美国哈佛大学经济学博士，清华大学经济管理学院经济学讲席教授，博士生导师。本文是他在央视节目《开讲啦》的演讲稿。</p>', '1', '1', '2', '腾讯网', 'http://www.qq.com', '', '1', '20', '1477647036', '1477647036', '1477647036', '00000000023', '00000000001', '1');
 INSERT INTO `news` VALUES ('15', '2', '这是新闻资讯的标题', '这是新闻资讯的描述信息', '这是新闻资讯的关键词', '这是新闻资讯的内容', '2', '1', '3', '姚永工作室', 'http://www.ken.com', 'http://www.ken.com/filelink.html', '1', '343', '1477675603', '1477675603', '1477675394', '00000000131', '00000000023', '0');
 INSERT INTO `news` VALUES ('16', '2', '这是新闻资讯的标题', '这是新闻资讯的描述信息', '这是新闻资讯的关键词', '这是新闻资讯的内容', '2', '1', '3', '姚永工作室', 'http://www.ken.com', 'http://www.ken.com/filelink.html', '1', '343', '1477675749', '1477675749', '1477675394', '00000000131', '00000000023', '1');
-INSERT INTO `news` VALUES ('18', '2', '修改新闻标题', null, null, '修改新闻内容', '1', '0', '0', null, null, null, '3', null, '1477756366', '1477756623', null, null, null, '0');
-INSERT INTO `news` VALUES ('19', '2', '添加新闻标题', null, null, '添加新闻内容', '1', '1', '0', null, null, null, '3', null, '1477756663', '1477756663', null, null, null, '0');
-INSERT INTO `news` VALUES ('20', '2', '添加新闻标题', null, null, '添加新闻内容', '1', '1', '0', null, null, null, '2', null, '1477758847', '1477758847', null, null, null, '0');
+INSERT INTO `news` VALUES ('18', '2', '修改新闻标题', null, null, '修改新闻内容', '1', '0', '0', null, null, null, '3', null, '1477756366', '1477756623', '1477647036', null, null, '0');
+INSERT INTO `news` VALUES ('19', '2', '添加新闻标题', null, null, '添加新闻内容', '1', '1', '0', null, null, null, '3', null, '1477756663', '1477756663', '1477647036', null, null, '0');
+INSERT INTO `news` VALUES ('20', '2', '添加新闻标题', null, null, '添加新闻内容', '1', '1', '0', null, null, null, '2', null, '1477758847', '1477758847', '1477647036', null, null, '0');
+INSERT INTO `news` VALUES ('22', '1', '测试文章1', '测试文章描述', '关键词1，关键词2', '<p>测试文章内容1<br/></p><p><img src=\"/static/upload/ueditor/image/20161110/1478756933607866.png\" title=\"1478756933607866.png\"/></p><p><img src=\"/static/upload/ueditor/image/20161110/1478756933100836.png\" title=\"1478756933100836.png\"/></p><p><img src=\"/static/upload/ueditor/image/20161110/1478756933110557.png\" title=\"1478756933110557.png\"/></p><p>测试文章内容1</p><p><br/></p><p>测试文章内容1</p><p>测试文章内容1</p><p>测试文章内容1</p>', '3', '1', '464748', '新浪网', 'www.sina.com.cn', null, '1', null, null, null, '1478534400', null, null, '0');
+INSERT INTO `news` VALUES ('23', '3', '222222', 'sdfsdfd', 'sdfsdfsd', '<p>dfsdfsd</p><p>dsfsdfsdf</p><p><img src=\"/static/upload/ueditor/image/20161110/1478757465128708.png\" title=\"1478757465128708.png\" alt=\"image4.png\"/></p><p>sdfsdfsd</p>', '1', '0', '0', 'fsdfsdfsd', 'fsdfsdfs', null, '1', null, '1478757466', '1478757466', '1480089600', null, null, '1');
+INSERT INTO `news` VALUES ('24', '3', '这是一条测试新闻', '无可奈何花落去', '新闻关键词1,新闻关键词2', '<p>dsfsdfdsfds</p>', '2', '1', '49', '搜狐网', 'http://www.sohu.com.cn', null, '1', null, '1479195325', '1479195325', '1479225600', null, null, '0');
+INSERT INTO `news` VALUES ('25', '3', '测试新闻2', 'dsfsdfsdfsdfdsfsd', '关键词1,关键词33', '<p>sdfsdfsdfds</p><p>fsdfsdfdsf</p><p>sdfdsfdsf</p><p><img src=\"/static/upload/ueditor/image/20161115/1479195530140851.jpg\" title=\"1479195530140851.jpg\" alt=\"domo-wallpaper-1920x1080-wallpaper-1.jpg\" width=\"926\" height=\"692\"/></p><p>sdfsdfdsfsdf</p><p>sdfsdfsdfsd</p><p>fsdfsdfds</p>', '0', '1', '50', '搜狐网', 'http://www.sohu.com.cn', null, '1', null, '1479195541', '1479195541', '1482854400', null, null, '1');
+INSERT INTO `news` VALUES ('26', '2', '这是一条测试新闻', 'dsfsdfdsf', '新闻关键词1,新闻关键词2', '<h3 style=\"box-sizing: border-box; font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;WenQuanYi Micro Hei&quot;, &quot;Microsoft Yahei&quot;, sans-serif; font-weight: 500; line-height: 1.2; color: rgb(51, 51, 51); margin: 1.5em 0px 0px; font-size: 1.5em; white-space: normal; background-color: rgb(255, 255, 255);\">1. 跨域资源请求的方式：</h3><ul style=\"box-sizing: border-box; margin-top: 1.5em; margin-bottom: 1.5em; margin-left: 3em; padding-left: 0px; color: rgb(51, 51, 51); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;WenQuanYi Micro Hei&quot;, &quot;Microsoft Yahei&quot;, sans-serif; font-size: 14px; white-space: normal; background-color: rgb(255, 255, 255);\" class=\" list-paddingleft-2\"><li><p style=\"box-sizing: border-box; margin-top: 0px; margin-bottom: 0px;\">ajax在之前是要严格遵守同源策略的，但是在h5中为了提供更好的使用性，诞生了ajax跨域的方式-CORS。跨域资源共享是为了解决跨域请求的问题的。</p></li><li><p style=\"box-sizing: border-box; margin-top: 0px; margin-bottom: 0px;\">除了CORS这个方案，还有另外两种跨域请求的方法，一个是使用jsonp的方式，一个是使用flash的跨域方案，通过服务器上的crossdomain.xml来控制跨域。</p></li></ul><h3 style=\"box-sizing: border-box; font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;WenQuanYi Micro Hei&quot;, &quot;Microsoft Yahei&quot;, sans-serif; font-weight: 500; line-height: 1.2; color: rgb(51, 51, 51); margin: 1.5em 0px 0px; font-size: 1.5em; white-space: normal; background-color: rgb(255, 255, 255);\">2. CORS的做法：</h3><p style=\"box-sizing: border-box; margin-top: 1.5em; margin-bottom: 1.5em; color: rgb(51, 51, 51); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;WenQuanYi Micro Hei&quot;, &quot;Microsoft Yahei&quot;, sans-serif; font-size: 14px; white-space: normal; background-color: rgb(255, 255, 255);\">CORS的跨域方式是通过：Access–Control-Allow-Origin这个头以及其他的头来实现的，客户端跨域访问一个服务器，服务器会确定这个这个域名是否有权限来获取资源，若有则返回一个带有Access–Control-Allow-Origin头的response以及资源。若无则返回一个权限错误：XMLHttpRequest cant load .....</p><h3 style=\"box-sizing: border-box; font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;WenQuanYi Micro Hei&quot;, &quot;Microsoft Yahei&quot;, sans-serif; font-weight: 500; line-height: 1.2; color: rgb(51, 51, 51); margin: 1.5em 0px 0px; font-size: 1.5em; white-space: normal; background-color: rgb(255, 255, 255);\">3. 风险点：</h3><p style=\"box-sizing: border-box; margin-top: 1.5em; margin-bottom: 1.5em; color: rgb(51, 51, 51); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;WenQuanYi Micro Hei&quot;, &quot;Microsoft Yahei&quot;, sans-serif; font-size: 14px; white-space: normal; background-color: rgb(255, 255, 255);\">（1）. 对Access–Control-Allow-Origin设置为*,并且没有携带会话认证，这样子意味着信息被公开在全网。<br/>（2）. http头可以伪造。http可以伪造意味着http头中的域名(origin)可以是假的，所以跨域是要配合身份验证进行的，所以跨域的时候记得带上session id。<br/>（3）. 就算是使用了session id，但是第三方有可能也会被入侵，从而导致源站信息泄露，所以CORS是一个非常危险的东西。<br/>（4）. 内部信息泄露，内部成员打开一个evil website，导致个人会话信息泄露，那么内部网站的数据将会泄露<br/>（5）. 另外，不是设置了Access–Control-Allow-Origin，并且对请求站点做了权限控制，就可以防止信息泄露，在返回权限错误的时候，请求的信息其实已经到了客户端。<br/>（6）. CORS默认不能携带会话信息，但是如果将withCredentials设置为true，则可以携带，所以这个属性最好设置为false。万一需要设置为true，请在Access–Control-Allow-Origin上设置具体的域名，不要使用 *。这是CORS的最后一层遮羞裤了，设置不好就裸奔了。</p><h3 style=\"box-sizing: border-box; font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;WenQuanYi Micro Hei&quot;, &quot;Microsoft Yahei&quot;, sans-serif; font-weight: 500; line-height: 1.2; color: rgb(51, 51, 51); margin: 1.5em 0px 0px; font-size: 1.5em; white-space: normal; background-color: rgb(255, 255, 255);\">4. 防御姿势：</h3><ul style=\"box-sizing: border-box; margin-top: 1.5em; margin-bottom: 1.5em; margin-left: 3em; padding-left: 0px; color: rgb(51, 51, 51); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;WenQuanYi Micro Hei&quot;, &quot;Microsoft Yahei&quot;, sans-serif; font-size: 14px; white-space: normal; background-color: rgb(255, 255, 255);\" class=\" list-paddingleft-2\"><li><p style=\"box-sizing: border-box; margin-top: 0px; margin-bottom: 0px;\">不要对Access–Control-Allow-Origin使用 *</p></li><li><p style=\"box-sizing: border-box; margin-top: 0px; margin-bottom: 0px;\">要对跨域请求验证session信息。</p></li><li><p style=\"box-sizing: border-box; margin-top: 0px; margin-bottom: 0px;\">严格审查请求信息，比如请求参数，还有http头信息。</p></li></ul><h3 style=\"box-sizing: border-box; font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;WenQuanYi Micro Hei&quot;, &quot;Microsoft Yahei&quot;, sans-serif; font-weight: 500; line-height: 1.2; color: rgb(51, 51, 51); margin: 1.5em 0px 0px; font-size: 1.5em; white-space: normal; background-color: rgb(255, 255, 255);\">5. 利用姿势：</h3><p style=\"box-sizing: border-box; margin-top: 1.5em; margin-bottom: 1.5em; color: rgb(51, 51, 51); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;WenQuanYi Micro Hei&quot;, &quot;Microsoft Yahei&quot;, sans-serif; font-size: 14px; white-space: normal; background-color: rgb(255, 255, 255);\">CORS主要是提供了一种隐形的跨域数据传输方式，偷取信息用户是不能感受到的，主要是两种利用方式。</p><ol style=\"box-sizing: border-box; margin-top: 1.5em; margin-bottom: 1.5em; margin-left: 3em; padding-left: 0px; color: rgb(51, 51, 51); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;WenQuanYi Micro Hei&quot;, &quot;Microsoft Yahei&quot;, sans-serif; font-size: 14px; white-space: normal; background-color: rgb(255, 255, 255);\" class=\" list-paddingleft-2\"><li><p style=\"box-sizing: border-box; margin-top: 0px; margin-bottom: 0px;\">第一个是需要将跨域js植入到被攻击的页面，这样子可以劫持到对方的cookie等认证信息。这种方式就是通过一个xss或者sqli，将js植入目标服务器，这样子就可以将认证信息偷过来了，如果是存储型就就更赞了，可以实时更新认证信息。</p></li><li><p style=\"box-sizing: border-box; margin-top: 0px; margin-bottom: 0px;\">第二个是将跨域放在自己控制的网站上，通过用户点击来攻击指定由CORS漏洞的服务器。这个要求目标服务器对CORS没有设置好，有CORS配置漏洞。</p></li><li><p style=\"box-sizing: border-box; margin-top: 0px; margin-bottom: 0px;\">另外ajax跨域不存在问题了，那么是不是CSRF也可以更隐蔽的进行了呢</p></li></ol><p><br/></p>', '3', '1', '51', '搜狐网', 'http://www.sohu.com.cn', null, '1', null, '1479196625', '1479196625', '1481212800', null, null, '1');
+INSERT INTO `news` VALUES ('27', '3', 'sdfdsfd', 'dfdsfds', 'sdfsdfsd', '<p>fdsfdsfds</p>', '3', '1', '54', 'fsdfsd', 'fsdfsdf', null, '1', null, '1479197660', '1479197660', '1478102400', null, null, '0');
+INSERT INTO `news` VALUES ('28', '3', 'sdfsdfsdf', 'sdfsdfsd', 'sdfsdf', '<p>fsdfdsf</p>', '3', '1', '60,61,62', 'sdfsdfsd', 'fsdf', null, '1', null, '1479197934', '1479197934', '1479830400', null, null, '0');
+INSERT INTO `news` VALUES ('29', '2', '111', '55gdfgdfg', '222', '<p>dfgfdgfdgd</p>', '1', '1', '', '333', '444', null, '1', null, '1479798977', '1479798977', '1479139200', null, null, '1');
+INSERT INTO `news` VALUES ('30', '2', 'aaaa', 'dsfsdfsd', 'bbbb', '<p>fsdfsdfds</p>', '1', '1', '', 'cccc', 'dddd', null, '1', null, '1479799091', '1479799091', '1480348800', null, null, '0');
 
 -- ----------------------------
--- Table structure for news_categories
+-- Table structure for `news_categories`
 -- ----------------------------
 DROP TABLE IF EXISTS `news_categories`;
 CREATE TABLE `news_categories` (
@@ -151,18 +171,21 @@ CREATE TABLE `news_categories` (
   `cat_group` smallint(6) unsigned zerofill DEFAULT NULL COMMENT '系统分组',
   `parent_id` smallint(6) unsigned zerofill NOT NULL COMMENT '父级ID',
   `type` tinyint(1) unsigned NOT NULL COMMENT '类型：1为分类，2为标签',
+  `create_time` int(11) unsigned zerofill DEFAULT NULL,
+  `update_time` int(11) unsigned zerofill DEFAULT NULL,
   PRIMARY KEY (`cat_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of news_categories
 -- ----------------------------
-INSERT INTO `news_categories` VALUES ('1', '财经', null, '000000', '0');
-INSERT INTO `news_categories` VALUES ('2', '军事', null, '000000', '0');
-INSERT INTO `news_categories` VALUES ('3', '科技', null, '000000', '0');
+INSERT INTO `news_categories` VALUES ('1', '财经', '000000', '000000', '0', '00000000000', '00000000000');
+INSERT INTO `news_categories` VALUES ('2', '军事', '000000', '000000', '0', '00000000000', '00000000000');
+INSERT INTO `news_categories` VALUES ('3', '科技', '000000', '000000', '0', '00000000000', '00000000000');
+INSERT INTO `news_categories` VALUES ('5', '图片', '000001', '000001', '2', '01477987488', '01477987488');
 
 -- ----------------------------
--- Table structure for news_comments
+-- Table structure for `news_comments`
 -- ----------------------------
 DROP TABLE IF EXISTS `news_comments`;
 CREATE TABLE `news_comments` (
@@ -199,7 +222,7 @@ INSERT INTO `news_comments` VALUES ('17', '1', '1', '试试验证器11', '1', '0
 INSERT INTO `news_comments` VALUES ('18', '1', '1', '试试验证器11', '1', '01477755707', '01477755707', null, null);
 
 -- ----------------------------
--- Table structure for news_images
+-- Table structure for `news_images`
 -- ----------------------------
 DROP TABLE IF EXISTS `news_images`;
 CREATE TABLE `news_images` (
@@ -217,7 +240,7 @@ CREATE TABLE `news_images` (
   `create_time` int(11) unsigned zerofill DEFAULT NULL,
   `update_time` int(11) unsigned zerofill DEFAULT NULL,
   PRIMARY KEY (`img_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of news_images
@@ -226,9 +249,67 @@ INSERT INTO `news_images` VALUES ('1', '图片1', 'http://www.tp5.com/static/img
 INSERT INTO `news_images` VALUES ('2', '图片2', 'http://www.tp5.com/static/img/2_s.jpg', 'http://www.tp5.com/static/img/2_m.jpg', 'http://www.tp5.com/static/img/2_o.jpg', '220', '144', '320', '178', '630', '350', '01477675603', '01477675603');
 INSERT INTO `news_images` VALUES ('3', '图片3', 'http://www.tp5.com/static/img/3_s.jpg', 'http://www.tp5.com/static/img/3_m.jpg', 'http://www.tp5.com/static/img/3_o.jpg', '220', '144', '320', '178', '640', '356', '01477675603', '01477675603');
 INSERT INTO `news_images` VALUES ('4', '图片4', 'http://www.tp5.com/static/img/4_s.jpg', 'http://www.tp5.com/static/img/4_m.jpg', 'http://www.tp5.com/static/img/4_o.jpg', '220', '144', '320', '178', '640', '356', '01477675603', '01477675603');
+INSERT INTO `news_images` VALUES ('5', null, '', '', '/ueditor/php/upload/image/20161109/1478668611101012.png', null, null, null, null, null, null, null, null);
+INSERT INTO `news_images` VALUES ('6', '', '/static/upload/ueditor/image/20161109/1478671401115789_s.png', '/static/upload/ueditor/image/20161109/1478671401115789_m.png', '/static/upload/ueditor/image/20161109/1478671442120919.png', '220', '220', '320', '320', '143', '143', null, null);
+INSERT INTO `news_images` VALUES ('7', '', '/static/upload/ueditor/image/20161109/1478671401115789_s.png', '/static/upload/ueditor/image/20161109/1478671401115789_m.png', '/static/upload/ueditor/image/20161109/1478671442120919.png', '220', '220', '320', '320', '143', '143', '01478674828', '01478674828');
+INSERT INTO `news_images` VALUES ('8', '', '/static/upload/ueditor/image/20161109/1478671401115789_s.png', '/static/upload/ueditor/image/20161109/1478671401115789_m.png', '/static/upload/ueditor/image/20161109/1478671442120919.png', '220', '220', '320', '320', '143', '143', '01478674865', '01478674865');
+INSERT INTO `news_images` VALUES ('9', 'image2222', '/static/upload/ueditor/image/20161109/1478671401115789_s.png', '/static/upload/ueditor/image/20161109/1478671401115789_m.png', '/static/upload/ueditor/image/20161109/1478671401115789.png', '220', '220', '320', '320', '143', '143', '01478675442', '01478675442');
+INSERT INTO `news_images` VALUES ('10', 'image2222', '/static/upload/ueditor/image/20161109/1478671442120919_s.png', '/static/upload/ueditor/image/20161109/1478671442120919_m.png', '/static/upload/ueditor/image/20161109/1478671442120919.png', '220', '220', '320', '320', '143', '143', '01478675555', '01478675555');
+INSERT INTO `news_images` VALUES ('11', 'image2222', '/static/upload/ueditor/image/20161109/1478675623856031_s.png', '/static/upload/ueditor/image/20161109/1478675623856031_m.png', '/static/upload/ueditor/image/20161109/1478675623856031.png', '220', '220', '320', '320', '145', '145', '01478675649', '01478675649');
+INSERT INTO `news_images` VALUES ('12', 'image2222', '/static/upload/ueditor/image/20161109/1478675623856031_s.png', '/static/upload/ueditor/image/20161109/1478675623856031_m.png', '/static/upload/ueditor/image/20161109/1478675623856031.png', '220', '220', '320', '320', '145', '145', '01478675750', '01478675750');
+INSERT INTO `news_images` VALUES ('13', 'image2222', '/static/upload/ueditor/image/20161109/1478675623856031_s.png', '/static/upload/ueditor/image/20161109/1478675623856031_m.png', '/static/upload/ueditor/image/20161109/1478675623856031.png', '220', '220', '320', '320', '145', '145', '01478675789', '01478675789');
+INSERT INTO `news_images` VALUES ('14', '', '/static/upload/ueditor/image/20161109/1478693803822595_s.png', '/static/upload/ueditor/image/20161109/1478693803822595_m.png', '/static/upload/ueditor/image/20161109/1478693803822595.png', '220', '220', '320', '320', '164', '158', '01478693807', '01478693807');
+INSERT INTO `news_images` VALUES ('15', '', '/static/upload/ueditor/image/20161109/1478693803518188_s.png', '/static/upload/ueditor/image/20161109/1478693803518188_m.png', '/static/upload/ueditor/image/20161109/1478693803518188.png', '220', '220', '320', '320', '143', '143', '01478693807', '01478693807');
+INSERT INTO `news_images` VALUES ('16', '', '/static/upload/ueditor/image/20161109/1478693803156377_s.png', '/static/upload/ueditor/image/20161109/1478693803156377_m.png', '/static/upload/ueditor/image/20161109/1478693803156377.png', '220', '220', '320', '320', '145', '145', '01478693808', '01478693808');
+INSERT INTO `news_images` VALUES ('17', '', '/static/upload/ueditor/image/20161109/1478693803615956_s.png', '/static/upload/ueditor/image/20161109/1478693803615956_m.png', '/static/upload/ueditor/image/20161109/1478693803615956.png', '220', '220', '320', '320', '142', '142', '01478693808', '01478693808');
+INSERT INTO `news_images` VALUES ('18', '', '/static/upload/ueditor/image/20161109/1478694069137701_s.png', '/static/upload/ueditor/image/20161109/1478694069137701_m.png', '/static/upload/ueditor/image/20161109/1478694069137701.png', '220', '220', '320', '320', '120', '120', '01478694073', '01478694073');
+INSERT INTO `news_images` VALUES ('19', '', '/static/upload/ueditor/image/20161109/1478694069100789_s.png', '/static/upload/ueditor/image/20161109/1478694069100789_m.png', '/static/upload/ueditor/image/20161109/1478694069100789.png', '220', '220', '320', '320', '120', '120', '01478694073', '01478694073');
+INSERT INTO `news_images` VALUES ('20', '', '/static/upload/ueditor/image/20161109/1478694070115858_s.png', '/static/upload/ueditor/image/20161109/1478694070115858_m.png', '/static/upload/ueditor/image/20161109/1478694070115858.png', '220', '220', '320', '320', '120', '120', '01478694073', '01478694073');
+INSERT INTO `news_images` VALUES ('21', '', '/static/upload/ueditor/image/20161109/1478694070809341_s.png', '/static/upload/ueditor/image/20161109/1478694070809341_m.png', '/static/upload/ueditor/image/20161109/1478694070809341.png', '220', '220', '320', '320', '120', '120', '01478694073', '01478694073');
+INSERT INTO `news_images` VALUES ('22', '', '/static/upload/ueditor/image/20161109/1478694070545729_s.png', '/static/upload/ueditor/image/20161109/1478694070545729_m.png', '/static/upload/ueditor/image/20161109/1478694070545729.png', '220', '220', '320', '320', '120', '120', '01478694073', '01478694073');
+INSERT INTO `news_images` VALUES ('23', '', '/static/upload/ueditor/image/20161109/1478694069137701_s.png', '/static/upload/ueditor/image/20161109/1478694069137701_m.png', '/static/upload/ueditor/image/20161109/1478694069137701.png', '220', '220', '320', '320', '120', '120', '01478694074', '01478694074');
+INSERT INTO `news_images` VALUES ('24', '', '/static/upload/ueditor/image/20161109/1478694069100789_s.png', '/static/upload/ueditor/image/20161109/1478694069100789_m.png', '/static/upload/ueditor/image/20161109/1478694069100789.png', '220', '220', '320', '320', '120', '120', '01478694074', '01478694074');
+INSERT INTO `news_images` VALUES ('25', '', '/static/upload/ueditor/image/20161109/1478694070115858_s.png', '/static/upload/ueditor/image/20161109/1478694070115858_m.png', '/static/upload/ueditor/image/20161109/1478694070115858.png', '220', '220', '320', '320', '120', '120', '01478694074', '01478694074');
+INSERT INTO `news_images` VALUES ('26', '', '/static/upload/ueditor/image/20161109/1478694177544524_s.jpg', '/static/upload/ueditor/image/20161109/1478694177544524_m.jpg', '/static/upload/ueditor/image/20161109/1478694177544524.jpg', '220', '220', '320', '320', '120', '120', '01478694181', '01478694181');
+INSERT INTO `news_images` VALUES ('27', '', '/static/upload/ueditor/image/20161109/1478694177111917_s.png', '/static/upload/ueditor/image/20161109/1478694177111917_m.png', '/static/upload/ueditor/image/20161109/1478694177111917.png', '220', '220', '320', '320', '164', '158', '01478694181', '01478694181');
+INSERT INTO `news_images` VALUES ('28', '', '/static/upload/ueditor/image/20161109/1478694177948420_s.png', '/static/upload/ueditor/image/20161109/1478694177948420_m.png', '/static/upload/ueditor/image/20161109/1478694177948420.png', '220', '220', '320', '320', '143', '143', '01478694181', '01478694181');
+INSERT INTO `news_images` VALUES ('29', '11', 'static/upload/image/20161110/1478749979167758_s.png', 'static/upload/image/20161110/1478749979167758_m.png', 'static/upload/image/20161110/1478749979167758.png', '220', '220', '320', '320', '142', '142', '01478749979', '01478749979');
+INSERT INTO `news_images` VALUES ('30', '11', '/static/upload/image/20161110/1478750084841192_s.png', '/static/upload/image/20161110/1478750084841192_m.png', '/static/upload/image/20161110/1478750084841192.png', '220', '220', '320', '320', '142', '142', '01478750084', '01478750084');
+INSERT INTO `news_images` VALUES ('31', '111', '/static/upload/image/20161110/1478750582763436_s.png', '/static/upload/image/20161110/1478750582763436_m.png', '/static/upload/image/20161110/1478750582763436.png', '220', '220', '320', '320', '120', '120', '01478750582', '01478750582');
+INSERT INTO `news_images` VALUES ('32', '222', '/static/upload/image/20161110/1478750850920019_s.png', '/static/upload/image/20161110/1478750850920019_m.png', '/static/upload/image/20161110/1478750850920019.png', '220', '220', '320', '320', '142', '142', '01478750850', '01478750850');
+INSERT INTO `news_images` VALUES ('33', '1111', '/static/upload/image/20161110/1478755305261499_s.png', '/static/upload/image/20161110/1478755305261499_m.png', '/static/upload/image/20161110/1478755305261499.png', '220', '220', '320', '320', '120', '120', '01478755305', '01478755305');
+INSERT INTO `news_images` VALUES ('34', '1111', '/static/upload/image/20161110/1478755305154959_s.png', '/static/upload/image/20161110/1478755305154959_m.png', '/static/upload/image/20161110/1478755305154959.png', '220', '220', '320', '320', '120', '120', '01478755305', '01478755305');
+INSERT INTO `news_images` VALUES ('35', '1111', '/static/upload/image/20161110/1478755305453045_s.png', '/static/upload/image/20161110/1478755305453045_m.png', '/static/upload/image/20161110/1478755305453045.png', '220', '220', '320', '320', '120', '120', '01478755305', '01478755305');
+INSERT INTO `news_images` VALUES ('36', '1111', '/static/upload/image/20161110/1478755453136666_s.png', '/static/upload/image/20161110/1478755453136666_m.png', '/static/upload/image/20161110/1478755453136666.png', '220', '220', '320', '320', '120', '120', '01478755453', '01478755453');
+INSERT INTO `news_images` VALUES ('37', '1111', '/static/upload/image/20161110/1478755453399816_s.png', '/static/upload/image/20161110/1478755453399816_m.png', '/static/upload/image/20161110/1478755453399816.png', '220', '220', '320', '320', '120', '120', '01478755453', '01478755453');
+INSERT INTO `news_images` VALUES ('38', '1111', '/static/upload/image/20161110/1478755453662857_s.png', '/static/upload/image/20161110/1478755453662857_m.png', '/static/upload/image/20161110/1478755453662857.png', '220', '220', '320', '320', '120', '120', '01478755453', '01478755453');
+INSERT INTO `news_images` VALUES ('39', '1111', '/static/upload/image/20161110/1478755481465789_s.png', '/static/upload/image/20161110/1478755481465789_m.png', '/static/upload/image/20161110/1478755481465789.png', '220', '220', '320', '320', '120', '120', '01478755482', '01478755482');
+INSERT INTO `news_images` VALUES ('40', '1111', '/static/upload/image/20161110/1478755482400778_s.png', '/static/upload/image/20161110/1478755482400778_m.png', '/static/upload/image/20161110/1478755482400778.png', '220', '220', '320', '320', '120', '120', '01478755482', '01478755482');
+INSERT INTO `news_images` VALUES ('41', '1111', '/static/upload/image/20161110/1478755482162951_s.png', '/static/upload/image/20161110/1478755482162951_m.png', '/static/upload/image/20161110/1478755482162951.png', '220', '220', '320', '320', '120', '120', '01478755482', '01478755482');
+INSERT INTO `news_images` VALUES ('42', '333', '/static/upload/image/20161110/1478755701146142_s.png', '/static/upload/image/20161110/1478755701146142_m.png', '/static/upload/image/20161110/1478755701146142.png', '220', '220', '320', '320', '145', '145', '01478755701', '01478755701');
+INSERT INTO `news_images` VALUES ('43', '测试文章1', '/static/upload/ueditor/image/20161110/1478756933607866_s.png', '/static/upload/ueditor/image/20161110/1478756933607866_m.png', '/static/upload/ueditor/image/20161110/1478756933607866.png', '220', '220', '320', '320', '120', '120', '01478756941', '01478756941');
+INSERT INTO `news_images` VALUES ('44', '测试文章1', '/static/upload/ueditor/image/20161110/1478756933100836_s.png', '/static/upload/ueditor/image/20161110/1478756933100836_m.png', '/static/upload/ueditor/image/20161110/1478756933100836.png', '220', '220', '320', '320', '120', '120', '01478756941', '01478756941');
+INSERT INTO `news_images` VALUES ('45', '测试文章1', '/static/upload/ueditor/image/20161110/1478756933110557_s.png', '/static/upload/ueditor/image/20161110/1478756933110557_m.png', '/static/upload/ueditor/image/20161110/1478756933110557.png', '220', '220', '320', '320', '120', '120', '01478756941', '01478756941');
+INSERT INTO `news_images` VALUES ('46', '测试文章1', '/static/upload/ueditor/image/20161110/1478756933607866_s.png', '/static/upload/ueditor/image/20161110/1478756933607866_m.png', '/static/upload/ueditor/image/20161110/1478756933607866.png', '220', '220', '320', '320', '120', '120', '01478757007', '01478757007');
+INSERT INTO `news_images` VALUES ('47', '测试文章1', '/static/upload/ueditor/image/20161110/1478756933100836_s.png', '/static/upload/ueditor/image/20161110/1478756933100836_m.png', '/static/upload/ueditor/image/20161110/1478756933100836.png', '220', '220', '320', '320', '120', '120', '01478757007', '01478757007');
+INSERT INTO `news_images` VALUES ('48', '测试文章1', '/static/upload/ueditor/image/20161110/1478756933110557_s.png', '/static/upload/ueditor/image/20161110/1478756933110557_m.png', '/static/upload/ueditor/image/20161110/1478756933110557.png', '220', '220', '320', '320', '120', '120', '01478757007', '01478757007');
+INSERT INTO `news_images` VALUES ('49', '这是一条测试新闻', '/static/upload/image/20161115/1479195325186544_s.jpg', '/static/upload/image/20161115/1479195325186544_m.jpg', '/static/upload/image/20161115/1479195325186544.jpg', '220', '220', '320', '320', '440', '441', '01479195325', '01479195325');
+INSERT INTO `news_images` VALUES ('50', '测试新闻2', '/static/upload/ueditor/image/20161115/1479195530140851_s.jpg', '/static/upload/ueditor/image/20161115/1479195530140851_m.jpg', '/static/upload/ueditor/image/20161115/1479195530140851.jpg', '220', '220', '320', '320', '1920', '1080', '01479195541', '01479195541');
+INSERT INTO `news_images` VALUES ('51', '这是一条测试新闻', '/static/upload/image/20161115/1479196624441510_s.jpg', '/static/upload/image/20161115/1479196624441510_m.jpg', '/static/upload/image/20161115/1479196624441510.jpg', '220', '220', '320', '320', '1920', '1080', '01479196624', '01479196624');
+INSERT INTO `news_images` VALUES ('52', '这是一条测试新闻', '/static/upload/image/20161115/1479196624735531_s.jpg', '/static/upload/image/20161115/1479196624735531_m.jpg', '/static/upload/image/20161115/1479196624735531.jpg', '220', '220', '320', '320', '1920', '1080', '01479196624', '01479196624');
+INSERT INTO `news_images` VALUES ('53', '这是一条测试新闻', '/static/upload/image/20161115/1479196624707324_s.jpg', '/static/upload/image/20161115/1479196624707324_m.jpg', '/static/upload/image/20161115/1479196624707324.jpg', '220', '220', '320', '320', '1920', '1080', '01479196625', '01479196625');
+INSERT INTO `news_images` VALUES ('54', 'sdfdsfd', '/static/upload/image/20161115/1479197659748715_s.jpg', '/static/upload/image/20161115/1479197659748715_m.jpg', '/static/upload/image/20161115/1479197659748715.jpg', '220', '220', '320', '320', '1920', '1080', '01479197659', '01479197659');
+INSERT INTO `news_images` VALUES ('55', 'sdfdsfd', '/static/upload/image/20161115/1479197659794335_s.jpg', '/static/upload/image/20161115/1479197659794335_m.jpg', '/static/upload/image/20161115/1479197659794335.jpg', '220', '220', '320', '320', '1920', '1080', '01479197660', '01479197660');
+INSERT INTO `news_images` VALUES ('56', 'sdfdsfd', '/static/upload/image/20161115/1479197660521682_s.jpg', '/static/upload/image/20161115/1479197660521682_m.jpg', '/static/upload/image/20161115/1479197660521682.jpg', '220', '220', '320', '320', '1920', '1080', '01479197660', '01479197660');
+INSERT INTO `news_images` VALUES ('57', 'sdfsdfsdf', '/static/upload/image/20161115/1479197735263421_s.png', '/static/upload/image/20161115/1479197735263421_m.png', '/static/upload/image/20161115/1479197735263421.png', '220', '220', '320', '320', '411', '734', '01479197735', '01479197735');
+INSERT INTO `news_images` VALUES ('58', 'sdfsdfsdf', '/static/upload/image/20161115/1479197736955148_s.png', '/static/upload/image/20161115/1479197736955148_m.png', '/static/upload/image/20161115/1479197736955148.png', '220', '220', '320', '320', '414', '748', '01479197736', '01479197736');
+INSERT INTO `news_images` VALUES ('59', 'sdfsdfsdf', '/static/upload/image/20161115/1479197736851794_s.png', '/static/upload/image/20161115/1479197736851794_m.png', '/static/upload/image/20161115/1479197736851794.png', '220', '220', '320', '320', '413', '707', '01479197736', '01479197736');
+INSERT INTO `news_images` VALUES ('60', 'sdfsdfsdf', '/static/upload/image/20161115/1479197933315908_s.png', '/static/upload/image/20161115/1479197933315908_m.png', '/static/upload/image/20161115/1479197933315908.png', '220', '220', '320', '320', '411', '734', '01479197933', '01479197933');
+INSERT INTO `news_images` VALUES ('61', 'sdfsdfsdf', '/static/upload/image/20161115/1479197933840313_s.png', '/static/upload/image/20161115/1479197933840313_m.png', '/static/upload/image/20161115/1479197933840313.png', '220', '220', '320', '320', '414', '748', '01479197933', '01479197933');
+INSERT INTO `news_images` VALUES ('62', 'sdfsdfsdf', '/static/upload/image/20161115/1479197934217636_s.png', '/static/upload/image/20161115/1479197934217636_m.png', '/static/upload/image/20161115/1479197934217636.png', '220', '220', '320', '320', '413', '707', '01479197934', '01479197934');
 
 -- ----------------------------
--- Table structure for user
+-- Table structure for `user`
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
@@ -262,7 +343,7 @@ CREATE TABLE `user` (
   `user_frozen_money` decimal(10,2) DEFAULT NULL COMMENT '冻结金额',
   `user_validcode` tinyint(6) unsigned DEFAULT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user
@@ -270,6 +351,7 @@ CREATE TABLE `user` (
 INSERT INTO `user` VALUES ('1', '123456', 'ken', '0', 'ken@ken.com', null, '13800138000', null, 'http://www.tp5.com/static/img/headpic2.jpg', null, null, null, null, null, null, '1.00', 'acdfgklmqtuxyzACEGJKLOPRSYZ12359', null, null, null, null, null, null, '0', null, null, null, null, null);
 INSERT INTO `user` VALUES ('2', '123456', 'yaoyon', '0', 'yaoyon@yaoyon.com', null, '13900139000', null, 'http://www.tp5.com/static/img/headpic4.jpg', null, null, null, null, null, null, '1.00', null, null, null, null, null, null, null, '0', null, null, null, null, null);
 INSERT INTO `user` VALUES ('3', '123456', 'yaoyonstudio', '0', 'yaoyonstudio@ken.com', null, '13600136000', null, 'http://www.tp5.com/static/img/headpic3.jpg', null, null, null, null, null, null, '1.00', null, null, null, null, null, null, null, '0', null, null, null, null, null);
-INSERT INTO `user` VALUES ('4', 'e10adc3949ba59abbe56e057f20f883e', 'test1', null, null, null, '13000130000', null, null, null, null, null, null, null, null, '1.00', 'bcdfghikmostuwzEGILNOPQRSTUX4789', '01477802484', '01477802484', null, null, null, null, '0', null, null, null, null, null);
-INSERT INTO `user` VALUES ('5', 'e10adc3949ba59abbe56e057f20f883e', 'test2', null, null, null, '13000130001', null, null, null, null, null, null, null, null, '1.00', 'acdefhklmnopruvwxyCDFGKLNRUX2367', '01477803027', '01477803027', '01477807073', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `user` VALUES ('6', 'e10adc3949ba59abbe56e057f20f883e', 'test3', null, null, null, '13000130002', null, null, null, null, null, null, null, null, '1.00', null, '01477805947', '01477805947', null, null, null, null, '0', null, null, null, null, null);
+INSERT INTO `user` VALUES ('4', 'e10adc3949ba59abbe56e057f20f883e', 'test1', null, null, null, '13000130000', null, 'http://www.tp5.com/static/img/headpic2.jpg', null, null, null, null, null, null, '1.00', 'bcdfghikmostuwzEGILNOPQRSTUX4789', '01477802484', '01477802484', null, null, null, null, '0', null, null, null, null, null);
+INSERT INTO `user` VALUES ('5', 'e10adc3949ba59abbe56e057f20f883e', 'test2', '1', 'test@test.com', '00000001111', '13000130002', 'updateQQ', 'updateHeadpic', null, null, null, '00000004', 'updateName', null, '1.00', 'ahjnpqsvwyzBFGHIJPQTUVWXY0134569', '01477803027', '01477968650', '01477962041', null, null, null, '0', null, null, null, null, null);
+INSERT INTO `user` VALUES ('6', 'e10adc3949ba59abbe56e057f20f883e', 'test3', null, null, null, '13000130002', null, 'http://www.tp5.com/static/img/headpic3.jpg', null, null, null, null, null, null, '1.00', null, '01477805947', '01477805947', null, null, null, null, '0', null, null, null, null, null);
+INSERT INTO `user` VALUES ('7', 'e10adc3949ba59abbe56e057f20f883e', 'hello', null, null, null, '13500135000', null, 'http://www.tp5.com/static/img/headpic2.jpg', null, null, null, null, null, null, '1.00', null, '01477962393', '01477962393', null, null, null, null, '0', null, null, null, null, null);
